@@ -2,8 +2,9 @@ import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import { generateToken } from "../lib/jwt";
 import * as AuthServices from "../services/Auth/auth.services";
-import { success } from "zod";
 import { loginInput, loginSchema } from "../schema/auth.schema";
+import jwt from "jsonwebtoken";
+import { email } from "zod";
 
 export const registerHandler = async (
   req: Request,
@@ -51,7 +52,11 @@ export const loginHandler = async (
       res.status(400).json({ message: "Password Salah" });
       return;
     }
-    const token = generateToken({ userId: user?.id }); // naming lebih jelas
+    const token = generateToken({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    }); // naming lebih jelas
     res.cookie("token", token, {
       httpOnly: true,
       secure: false, // true hanya jika HTTPS (misal di production)
@@ -65,5 +70,46 @@ export const loginHandler = async (
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Something went wrong" });
+  }
+};
+export const checkHandler = async (request: Request, response: Response) => {
+  try {
+    const token =
+      request.cookies?.token || request.headers["authorization"]?.split(" ")[1];
+    if (!token) {
+      response.status(401).json({ message: "token not found", success: false });
+      return;
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+      id: string;
+      name: string;
+      email: string;
+    };
+    return response.json({
+      success: true,
+      user: {
+        userId: decoded.id,
+        name: decoded.name,
+        email: decoded.email,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(401).json({
+      message: "Invalid token",
+      success: false,
+      user: {},
+    });
+  }
+};
+export const logoutHandler = async (requst: Request, response: Response) => {
+  try {
+    response.clearCookie("token");
+    response
+      .status(200)
+      .json({ message: "Berhasil Logout!", success: true, error: null });
+  } catch (error) {
+    console.log(error);
+    response.status(400).json({ message: "Gagal Logout!", success: false });
   }
 };
