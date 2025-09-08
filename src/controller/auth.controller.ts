@@ -97,8 +97,8 @@ export const checkHandler = async (request: Request, response: Response) => {
     console.log(error);
     response.status(401).json({
       message: "Invalid token",
-      success: false,
       user: {},
+      success: false,
     });
   }
 };
