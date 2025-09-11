@@ -14,5 +14,5 @@ router.post("/register", validate(registerSchema), registerHandler);
 router.post("/login", validate(loginSchema), loginHandler);
 router.post("/logout", logoutHandler);
 router.get("/check", checkHandler);
-router.get("/total", totalUserHandler);
+router.get("/user-total", totalUserHandler);
 export default router;
