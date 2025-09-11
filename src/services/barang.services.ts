@@ -32,3 +32,7 @@ export const UpdateBarangServices = async (id: string, data: barangInput) => {
 export const DeleteBarangServices = async (id: string) => {
   return prisma.barang.delete({ where: { id } });
 };
+
+export const TotalBarangServices = async () => {
+  return prisma.barang.count();
+};

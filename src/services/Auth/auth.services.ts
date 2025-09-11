@@ -22,3 +22,8 @@ export const LoginServices = async (data: loginInput) => {
   const user = await prisma.user.findUnique({ where: { email: data.email } });
   return user;
 };
+
+export const TotalUserServices = async () => {
+  const total = await prisma.user.count();
+  return total;
+};

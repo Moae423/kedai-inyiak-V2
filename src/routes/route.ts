@@ -11,4 +11,5 @@ router.get("/", barangController.getAllBarangHandler);
 router.get("/:id", barangController.getBarangByIdHandler);
 router.put("/:id", barangController.updateBarangHandler);
 router.delete("/:id", barangController.deleteBarangHandler);
+router.get("/barang/total", barangController.totalBarangHandler);
 export default router;

@@ -36,7 +36,7 @@ export const getAllBarangHandler = async (
     const data = await barangservices.GetAllBarangServices();
     res.status(200).json({
       message: "Data Barang Showed Up",
-      data: { data },
+      data: data,
       success: true,
       error: null,
     });
@@ -150,6 +150,26 @@ export const deleteBarangHandler = async (req: Request, res: Response) => {
       data: null,
       success: false,
       error: true,
+    });
+  }
+};
+
+export const totalBarangHandler = async (req: Request, res: Response) => {
+  try {
+    const data = await barangservices.TotalBarangServices();
+    res.status(200).json({
+      message: "Data Barang Showed Up",
+      data: data,
+      success: true,
+      error: null,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "Data Barang Not Showed Up",
+      data: null,
+      success: false,
+      error: error,
     });
   }
 };

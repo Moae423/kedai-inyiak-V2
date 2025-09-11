@@ -4,6 +4,7 @@ import {
   loginHandler,
   logoutHandler,
   registerHandler,
+  totalUserHandler,
 } from "../controller/auth.controller";
 import { validate } from "../middleware/validate";
 import { loginSchema, registerSchema } from "../schema/auth.schema";
@@ -13,4 +14,5 @@ router.post("/register", validate(registerSchema), registerHandler);
 router.post("/login", validate(loginSchema), loginHandler);
 router.post("/logout", logoutHandler);
 router.get("/check", checkHandler);
+router.get("/total", totalUserHandler);
 export default router;

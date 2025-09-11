@@ -113,3 +113,13 @@ export const logoutHandler = async (requst: Request, response: Response) => {
     response.status(400).json({ message: "Gagal Logout!", success: false });
   }
 };
+
+export const totalUserHandler = async (req: Request, res: Response) => {
+  try {
+    const total = await AuthServices.TotalUserServices();
+    res.status(200).json({ message: "Data User Showed Up", data: total });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Data User Not Showed Up", data: null });
+  }
+};
